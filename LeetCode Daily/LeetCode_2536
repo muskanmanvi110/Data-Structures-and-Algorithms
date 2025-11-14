@@ -1,0 +1,67 @@
+2536. Increment Submatrices by One
+link - https://leetcode.com/problems/increment-submatrices-by-one/?envType=daily-question&envId=2025-11-14
+
+
+#### BRUTE FORCE ####
+
+TIME COMPLEXITY
+q = number of queries
+n = size of matrix (n × n)
+For each query, traverse the entire n × n matrix.
+Worst-case rectangle = whole matrix
+T = 𝑞 × 𝑛^2
+
+class Solution {
+    public int[][] rangeAddQueries(int n, int[][] queries) {
+        int[][] matrix = new int[n][n];
+
+        for(int i = 0; i < queries.length; i++){
+            
+            int start_i = queries[i][0];
+            int start_j = queries[i][1];
+
+            int end_i = queries[i][2];
+            int end_j = queries[i][3];
+
+            for(int k = start_i; k<=end_i; k++){
+                for(int l = start_j; l<=end_j; l++){
+                    matrix[k][l]++;
+                }
+            }
+        }
+        return matrix;
+    }
+}
+
+#### OPTIMAL APPROACH ####
+
+TIME COMPLEXITY - O(q × n + n²)
+
+DIFFRERECE OF ARRAY TECHNIQUE
+
+class Solution {
+    public int[][] rangeAddQueries(int n, int[][] queries) {
+        int[][] matrix = new int[n][n];
+
+        for(int i = 0; i < queries.length; i++){
+            
+            int start_i = queries[i][0];
+            int start_j = queries[i][1];
+
+            int end_i = queries[i][2];
+            int end_j = queries[i][3];
+
+            for(int row = start_i; row <= end_i; row++){
+                matrix[row][start_j]++;
+                if(end_j + 1 < n) matrix[row][end_j + 1]--;
+            }
+        }
+
+        for(int i = 0; i < n; i++){
+            for(int j = 1; j < n; j++){
+                matrix[i][j] += matrix[i][j-1];
+            }
+        }
+        return matrix;
+    }
+}
