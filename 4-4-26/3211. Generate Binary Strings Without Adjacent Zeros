@@ -1,0 +1,24 @@
+class Solution {
+    public List<String> validStrings(int n) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        solve(n, sb, ans, false);
+        return ans;
+    }
+    public static void solve(int n, StringBuilder sb, List<String> ans, boolean zero){
+        if(sb.length() == n){
+            ans.add(sb.toString());
+            return;
+        }
+        
+        if(!zero){
+            sb.append('0');
+            solve(n, sb, ans, true);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        sb.append('1');
+        solve(n, sb, ans, false);
+        sb.deleteCharAt(sb.length() - 1);
+    }
+}
