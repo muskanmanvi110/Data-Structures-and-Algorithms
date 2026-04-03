@@ -1,0 +1,67 @@
+APPROACH - 01
+
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        solve(n, ans, sb);
+        return ans;
+    }
+    public static void solve(int n, List<String> ans, StringBuilder sb){
+        if(sb.length() >= 2 * n){
+            if(isValid(sb.toString())){
+                ans.add(sb.toString());
+            }
+            return;
+        }
+
+        sb.append('(');
+        solve(n, ans, sb);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        
+        sb.append(')');
+        solve(n, ans, sb);
+        sb.deleteCharAt(sb.length() - 1);
+
+    }
+
+    static boolean isValid(String s){
+        int count = 0;
+        for(char ch : s.toCharArray()){
+            if(ch == '(') count++;
+            if(ch == ')') count--;
+            if(count < 0) return false;
+        }
+
+        return count == 0;
+    }
+}
+
+APPROACH - 02
+
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        solve(n, ans, sb, 0, 0);
+        return ans;
+    }
+    public static void solve(int n, List<String> ans, StringBuilder sb, int open, int close){
+        if(sb.length() >= 2 * n){
+            ans.add(sb.toString());
+            return;
+        }
+
+        if(open < n){
+            sb.append('(');
+            solve(n, ans, sb, open + 1, close);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        if(open > close){
+            sb.append(')');
+            solve(n, ans, sb, open, close + 1);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
