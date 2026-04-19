@@ -1,0 +1,24 @@
+class Solution {
+    public int firstStableIndex(int[] nums, int k) {
+        int n = nums.length;
+        for(int i = 0; i<n; i++){
+            int prev_lar = Integer.MIN_VALUE;
+            for(int j = 0; j<=i; j++){
+                prev_lar = Math.max(prev_lar, nums[j]);
+            }
+
+            int fu_smal = Integer.MAX_VALUE;
+            for(int j = i; j<n; j++){
+                fu_smal = Math.min(fu_smal, nums[j]);
+            }
+
+            int score = prev_lar - fu_smal;
+
+            if(score <= k){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+}
