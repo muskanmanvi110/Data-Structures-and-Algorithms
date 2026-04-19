@@ -1,0 +1,59 @@
+class Pair{
+    int i;
+    int j;
+    int c;
+    int t;
+    Pair(int i, int j, int c, int t){
+        this.i = i;
+        this.j = j;
+        this.c = c;
+        this.t = t;
+    }
+}
+
+class Solution {
+    public int[][] colorGrid(int n, int m, int[][] sources) {
+        int[][] color = new int[n][m];
+        int[][] time = new int[n][m];
+        for(int i = 0; i < n; i++){
+            Arrays.fill(time[i], -1);
+        }
+        Queue<Pair> q = new LinkedList<>();
+        for(int k = 0; k < sources.length; k++){
+            int i = sources[k][0];
+            int j = sources[k][1];
+            int c = sources[k][2];
+            color[i][j] = c;
+            time[i][j] = 0;
+            q.add(new Pair(i, j, c, 0));
+        }
+
+        int[] row = {-1, 0, 1, 0};
+        int[] col = {0, -1, 0, 1};
+        while(!q.isEmpty()){
+            int i = q.peek().i;
+            int j = q.peek().j;
+            int c = q.peek().c;
+            int t = q.peek().t + 1;
+            q.remove();
+            for(int k = 0; k<4; k++){
+                int new_row = i + row[k];
+                int new_col = j + col[k];
+                if(new_row >= 0 && new_row < n && new_col >= 0 && new_col < m){
+                    if(time[new_row][new_col] == -1){
+                        color[new_row][new_col] = c;
+                        time[new_row][new_col] = t;
+                        q.add(new Pair(new_row, new_col, c, t));
+                    }else if(time[new_row][new_col] == t){
+                        if(c > color[new_row][new_col]){
+                            color[new_row][new_col] = c;
+                            q.add(new Pair(new_row, new_col, c, t));
+                        }
+                    }
+                }
+            }
+        }
+
+        return color;
+    }
+}
